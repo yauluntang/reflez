@@ -48,7 +48,7 @@ export class HomePage {
     let game;
 
     setTimeout(()=>{
-      game = new Phaser.Game($('#drawingArea').innerWidth(), $('#drawingArea').innerHeight(), Phaser.AUTO, 'drawingArea', { preload: preload, create: create, update: update, render: render });
+      game = new Phaser.Game($('#drawingArea').innerWidth() * 2, $('#drawingArea').innerHeight() * 2, Phaser.AUTO, 'drawingArea', { preload: preload, create: create, update: update, render: render });
     },1000);
     function preload() {
 
@@ -60,6 +60,7 @@ export class HomePage {
       //  The second parameter is the URL of the image (relative)
       game.load.image('phaser', 'assets/imgs/ball.png');
 
+      game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;;
     }
 
     var sprite;

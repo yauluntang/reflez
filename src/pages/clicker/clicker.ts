@@ -97,6 +97,7 @@ export class ClickerPage {
       this.text = this.game.add.text(gameCore.screenWidth/2, gameCore.screenHeight/2, "", style);
       this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
       this.text.anchor.set(0.5);
+      this.text.text = "3";
     }
 
     let addBgBox = ( color: any ) => {

@@ -58,8 +58,11 @@ export class CommonService  {
 
 
       gameObject.phaserGame = new Phaser.Game( gameObject.screenWidth, gameObject.screenHeight, Phaser.AUTO, 'drawingArea', { preload: preload, create: create, update: update, render: render });
-      window.addEventListener("resize", ()=>{ onWindowResize()});
-      setTimeout(()=>{onWindowResize()},100);
+
+      let listener = () => { onWindowResize() };
+      setTimeout(()=>{ onWindowResize()}, 100);
+
+      window.addEventListener("resize", listener);
 
       let onWindowResize = () => {
         gameObject.screenWidth = $('#'+parent).innerWidth() * 2
@@ -68,7 +71,7 @@ export class CommonService  {
       }
 
       gameObject.destroy = () => {
-        window.removeEventListener("resize");
+        window.removeEventListener("resize", listener);
       };
 
       return gameObject;

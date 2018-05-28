@@ -146,6 +146,7 @@ export class ClickerPage {
     this.gameCore.gameStarted = true;
 
 
+
     this.game = this.gameCore.phaserGame;
   }
 }

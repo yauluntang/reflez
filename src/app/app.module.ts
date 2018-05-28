@@ -10,13 +10,15 @@ import { ClickerPage } from '../pages/clicker/clicker';
 import { CommonService } from "./common.service";
 import { CommonProviderModule } from "../provider/common.module";
 import {Clicker2Page} from "../pages/clicker/clicker2";
+import {Clicker3Page} from "../pages/clicker/clicker3";
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
     ClickerPage,
-    Clicker2Page
+    Clicker2Page,
+    Clicker3Page
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,8 @@ import {Clicker2Page} from "../pages/clicker/clicker2";
     MyApp,
     HomePage,
     ClickerPage,
-    Clicker2Page
+    Clicker2Page,
+    Clicker3Page
   ],
   providers: [
     StatusBar,

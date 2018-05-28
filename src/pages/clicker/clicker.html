@@ -2,6 +2,7 @@
   <ion-navbar>
     <ion-title *ngIf="gameCore">
       {{gameCore.title}}
+      <span class="game-timer" *ngIf="gameCore.timer">Timer:{{gameCore.timer}}</span>
     </ion-title>
   </ion-navbar>
 </ion-header>

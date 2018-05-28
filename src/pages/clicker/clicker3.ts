@@ -11,45 +11,19 @@ import {CommonService} from "../../app/common.service";
 export class Clicker3Page {
   private game: any;
   private gameCore: any;
-  private text: any;
-  private bg:any;
-
-  private gameStarted: boolean;
-  private gameWon:boolean;
-  private gameLost: boolean;
-
-  private title: string;
-  private score: number;
   private instructions: string;
 
   constructor(public navCtrl: NavController, public com: CommonService) {
-    this.gameStarted = false;
-    this.gameWon = false;
-    this.gameLost = false;
     this.instructions = 'Instruction: Click the numbers in order as fast as possible';
   }
 
-  getRandomSeconds(){
-    return Math.floor( Math.random() * 6000 )+ 4000;
-  }
-  winGame(){
-    this.gameWon = true;
-  }
-
-  loseGame(){
-    this.gameLost = true;
-  }
-
-  exitGame(){
-    this.navCtrl.pop();
-  }
   ionViewWillLeave(){
     this.gameCore.destroy();
 
   }
 
   startGame(){
-    this.gameStarted = true;
+
 
     let shuffle = a => {
       for (let i = a.length - 1; i > 0; i--) {
@@ -71,26 +45,21 @@ export class Clicker3Page {
       this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;;
     }
     let startTime = 0;
-    let colorIndex = 0;
-
-    let listOfColor = ['#000000','#e6194b','#3cb44b','#ffe119'];
-
-
-
     let marginTop = 0;
     let marginLeft = 0;
     let gameWidth = 0;
 
     let currentNumber = 1;
-    let n = 2;
-    let layers = 5;
+    let n = 10;
+    let layers = 1;
 
     let max = n*n*layers;
 
     let boxes = [];
-
+    let frontg;
+    let alpha = 1;
     let create = () => {
-      this.title = 'Switch Color - '+ colorIndex + '/' + (listOfColor.length -1);
+      this.gameCore.title = 'Numbering - '+ 0 + '/' + max;
       this.game.time.advancedTiming = true;
 
 
@@ -126,6 +95,14 @@ export class Clicker3Page {
           l++;
         }
       }
+
+
+      frontg = this.game.add.graphics();
+      frontg.beginFill( this.com.colorhexToNumber('#000000'), 1);
+      frontg.drawRect(0, 0, gameCore.screenWidth, gameCore.screenHeight);
+      //frontg.drawRect(gameCore.screenWidth, 0, -gameCore.screenWidth, gameCore.screenHeight);
+      frontg.endFill();
+
     }
 
     // Change Color Function
@@ -183,13 +160,14 @@ export class Clicker3Page {
           }
 
           if ( currentNumber === max ){
-            this.score = ((new Date().getTime() - startTime)/1000);
-            this.winGame();
+            this.gameCore.score = ((new Date().getTime() - startTime)/1000);
+            this.gameCore.winGame();
           }
+          this.gameCore.title = 'Numbering - '+ currentNumber + '/' + max;
           currentNumber ++;
         }
         else {
-          this.loseGame();
+          this.gameCore.loseGame();
         }
       }, this.game);
 
@@ -199,13 +177,31 @@ export class Clicker3Page {
     // Active running function
     let update = () => {
 
-    }
-    let render = () => {
-      this.game.debug.text(this.game.time.fps, 2, 14, "#00ff00");
+      let cur = (new Date()).getTime() - startTime;
+
+
+      if ( cur > 500 ) {
+        if (alpha > 0) {
+          alpha -= 0.1;
+        }
+        else {
+          alpha = 0;
+        }
+
+        frontg.clear();
+        frontg.beginFill(this.com.colorhexToNumber('#000000'), alpha);
+        frontg.drawRect(0, 0, gameCore.screenWidth, gameCore.screenHeight);
+        frontg.endFill();
+      }
     }
 
-    let gameCore = this.com.commonGame({parent: 'drawingArea',preload: preload, create: create, update: update, render: render});
+    let render = () =>{
+
+    }
+
+    let gameCore = this.com.commonGame({parent: 'drawingArea',preload: preload, create: create, update: update, render: render, navCtrl: this.navCtrl});
     this.gameCore = gameCore;
+    this.gameCore.gameStarted = true;
     this.game = this.gameCore.phaserGame;
   }
 }

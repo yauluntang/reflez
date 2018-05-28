@@ -77,8 +77,33 @@ export class CommonService  {
         gameObject.phaserGame.scale.setGameSize( gameObject.screenWidth, gameObject.screenHeight );
       }
 
+      gameObject.startTime = null;
+      gameObject.futureTime = null;
+      gameObject.setTimer = ( x ) => {
+        gameObject.startTime = new Date().getTime();
+        gameObject.futureTime = gameObject.startTime + x * 1000;
+      }
+
+      gameObject.interval = setInterval(()=>{
+        if ( gameObject.futureTime ) {
+          if ( !gameObject.gameWon && !gameObject.gameLost && gameObject.gameStarted ) {
+            gameObject.timer = gameObject.futureTime - new Date().getTime()
+            if (gameObject.timer <= 0) {
+              gameObject.loseGame();
+            }
+          }
+        }
+        else {
+          gameObject.timer = null;
+        }
+      },10);
+
+
       gameObject.destroy = () => {
         window.removeEventListener("resize", listener);
+        if ( gameObject.interval ) {
+          clearInterval(gameObject.interval);
+        }
         gameObject.phaserGame.destroy();
         gameObject.phaserGame = null;
       };

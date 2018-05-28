@@ -50,14 +50,17 @@ export class Clicker2Page {
     let gameWidth = 0;
 
     let currentNumber = 1;
-    let n = 2;
-    let layers = 5;
+    let n = 4;
+    let layers = 1;
 
     let max = n*n*layers;
 
     let boxes = [];
     let frontg;
     let alpha = 1;
+
+    let timeLimit = 20;
+
     let create = () => {
       this.gameCore.title = 'Numbering - '+ 0 + '/' + max;
       this.game.time.advancedTiming = true;
@@ -181,18 +184,24 @@ export class Clicker2Page {
 
 
       if ( cur > 500 ) {
+
+        frontg.clear();
+        alpha -= 0.1;
         if (alpha > 0) {
-          alpha -= 0.1;
+          frontg.beginFill(this.com.colorhexToNumber('#000000'), alpha);
+          frontg.drawRect(0, 0, gameCore.screenWidth, gameCore.screenHeight);
+          frontg.endFill();
         }
         else {
           alpha = 0;
+          frontg.destroy();
         }
 
-        frontg.clear();
-        frontg.beginFill(this.com.colorhexToNumber('#000000'), alpha);
-        frontg.drawRect(0, 0, gameCore.screenWidth, gameCore.screenHeight);
-        frontg.endFill();
       }
+
+
+
+
     }
 
     let render = () =>{
@@ -202,6 +211,7 @@ export class Clicker2Page {
     let gameCore = this.com.commonGame({parent: 'drawingArea',preload: preload, create: create, update: update, render: render, navCtrl: this.navCtrl});
     this.gameCore = gameCore;
     this.gameCore.gameStarted = true;
+    this.gameCore.setTimer(30);
     this.game = this.gameCore.phaserGame;
   }
 }

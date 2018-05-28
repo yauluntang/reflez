@@ -183,7 +183,7 @@ export class Clicker2Page {
       let cur = (new Date()).getTime() - startTime;
 
 
-      if ( cur > 500 ) {
+      if ( cur > 500 && frontg ) {
 
         frontg.clear();
         alpha -= 0.1;
@@ -195,6 +195,7 @@ export class Clicker2Page {
         else {
           alpha = 0;
           frontg.destroy();
+          frontg = null;
         }
 
       }

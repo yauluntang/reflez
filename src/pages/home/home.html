@@ -4,8 +4,8 @@
   <div class="title-center">
     <img class="title-icon" src="assets/img/lightning.svg">
     <h1>Reflez</h1>
-    <div class="row">
-      <game-button class="col-xs-6" [game]="game" *ngFor="let game of games"></game-button>
+    <div class="gamerow">
+      <game-button class="gameitem" [game]="game" *ngFor="let game of games"></game-button>
 
       <!--
       <div class="col-xs-6">

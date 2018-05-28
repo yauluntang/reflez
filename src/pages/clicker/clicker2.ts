@@ -5,10 +5,10 @@ import {CommonService} from "../../app/common.service";
 
 
 @Component({
-  selector: 'page-clicker',
+  selector: 'page-clicker2',
   templateUrl: 'clicker.html'
 })
-export class ClickerPage {
+export class Clicker2Page {
   private game: any;
   private gameCore: any;
   private text: any;
@@ -26,7 +26,7 @@ export class ClickerPage {
     this.gameStarted = false;
     this.gameWon = false;
     this.gameLost = false;
-    this.instructions = 'Instruction: Click the screen when the screen color changes. You will get higher score if you click as soon as possible. You lose if you click too soon.';
+    this.instructions = 'Instruction: Click the numbers in order as fast as possible';
   }
 
   getRandomSeconds(){
@@ -108,16 +108,8 @@ export class ClickerPage {
     let create = () => {
       this.title = 'Switch Color - '+ colorIndex + '/' + (listOfColor.length -1)
       startTime = (new Date()).getTime();
-      colorTime = (new Date()).getTime();
-      this.bg = this.game.add.graphics();
-      this.bg.inputEnabled = true;
-      this.bg.events.onInputDown.add(listener, this.game);
-      addBgBox( listOfColor[colorIndex] );
-      var style = { font: "bold 144px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-      this.text = this.game.add.text(gameCore.screenWidth/2, gameCore.screenHeight/2, "", style);
-      this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
-      this.text.anchor.set(0.5);
-      this.text.text = "";
+
+
     }
 
     // Change Color Function
@@ -126,37 +118,16 @@ export class ClickerPage {
         this.text.text = "";
       }
       this.bg.beginFill( this.com.colorhexToNumber(color), 1.0);
+
       this.bg.drawRect(0, 0, gameCore.screenWidth, gameCore.screenHeight);
       this.bg.drawRect(gameCore.screenWidth, 0, -gameCore.screenWidth, gameCore.screenHeight);
+
       this.bg.endFill();
     }
 
     // Active running function
     let update = () => {
-      let now = (new Date()).getTime();
 
-      if (alpha < 1) {
-        alpha = alpha + 0.1;
-      }
-      if (alpha > 1) {
-        alpha = 1;
-      }
-      lastFrame = now;
-      let timeElapsed = now - colorTime;
-      if (timeElapsed > duration && readyToChange && !this.gameWon && !this.gameLost ) {
-        if ( colorIndex < listOfColor.length - 1 ) {
-          colorIndex++;
-          addBgBox(listOfColor[colorIndex]);
-          reactionStartTime = now;
-          readyToClick = true;
-          readyToChange = false;
-        }
-      }
-      if ( timeElapsed > duration + 5000 && !this.gameWon && !this.gameLost  ){
-        this.loseGame();
-      }
-
-      this.text.alpha = alpha;
     }
     let render = () => {
     }

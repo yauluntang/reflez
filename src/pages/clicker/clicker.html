@@ -1,7 +1,7 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      {{title}}
     </ion-title>
   </ion-navbar>
 </ion-header>
@@ -11,9 +11,42 @@
   <div id="drawingArea" class="drawingArea"></div>
 
 </ion-content>
-<div id="tutor" class="tutor">
+
+
+<div id="tutor" class="tutor" *ngIf="!gameStarted">
   <div class="tutor-content">
-    <h5 class="modal-title">Instruction: Click the screen when the color changes</h5>
-    <div></div>
+    <div  class="instruction-icon-container">
+    <img class="instruction-icon" src="assets/img/instructions.svg"/>
+    </div>
+    <h5 class="modal-title">{{instructions}}</h5>
+    <div class="button-center">
+      <button type="button" class="btn btn-primary btn-lg" (click)="startGame()">Start</button>
+    </div>
+  </div>
+</div>
+
+<div id="winGame" class="tutor" *ngIf="gameWon">
+  <div class="tutor-content">
+    <div  class="instruction-icon-container">
+      <img class="instruction-icon" src="assets/img/instructions.svg"/>
+    </div>
+    <h5 class="center-title">You finished this challenge</h5>
+    <h4 class="center-title">Your Score: <span class="score">{{score}}</span></h4>
+    <div class="button-center">
+      <button type="button" class="btn btn-primary btn-lg" (click)="exitGame()">Exit</button>
+    </div>
+  </div>
+</div>
+
+
+<div id="loseGame" class="tutor" *ngIf="gameLost">
+  <div class="tutor-content">
+    <div  class="instruction-icon-container">
+      <img class="instruction-icon" src="assets/img/cross.svg"/>
+    </div>
+    <h5 class="center-title">You failed this challenge</h5>
+    <div class="button-center">
+      <button type="button" class="btn btn-primary btn-lg" (click)="exitGame()">Exit</button>
+    </div>
   </div>
 </div>

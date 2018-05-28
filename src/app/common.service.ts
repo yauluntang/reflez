@@ -72,6 +72,8 @@ export class CommonService  {
 
       gameObject.destroy = () => {
         window.removeEventListener("resize", listener);
+        gameObject.phaserGame.destroy();
+        gameObject.phaserGame = null;
       };
 
       return gameObject;

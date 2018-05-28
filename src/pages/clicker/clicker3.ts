@@ -5,10 +5,10 @@ import {CommonService} from "../../app/common.service";
 
 
 @Component({
-  selector: 'page-clicker2',
+  selector: 'page-clicker3',
   templateUrl: 'clicker.html'
 })
-export class Clicker2Page {
+export class Clicker3Page {
   private game: any;
   private gameCore: any;
   private text: any;
@@ -90,7 +90,7 @@ export class Clicker2Page {
     let boxes = [];
 
     let create = () => {
-      this.title = 'Numbering - '+ 0 + '/' + max;
+      this.title = 'Switch Color - '+ colorIndex + '/' + (listOfColor.length -1);
       this.game.time.advancedTiming = true;
 
 
@@ -186,7 +186,6 @@ export class Clicker2Page {
             this.score = ((new Date().getTime() - startTime)/1000);
             this.winGame();
           }
-          this.title = 'Numbering - '+ currentNumber + '/' + max;
           currentNumber ++;
         }
         else {

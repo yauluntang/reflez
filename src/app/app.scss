@@ -80,6 +80,20 @@ body{
   left:0px;
   z-index: 99999;
   background-color: rgba(0,0,0,0.5);
+  animation: fadein 0.5s;
+  -moz-animation: fadein 0.5s; /* Firefox */
+  -webkit-animation: fadein 0.5s; /* Safari and Chrome */
+  -o-animation: fadein 0.5s; /* Opera */
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes fadein {
+  from {
+    opacity:0;
+  }
+  to {
+    opacity:1;
+  }
 }
 
 

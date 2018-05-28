@@ -30,7 +30,7 @@ export class ClickerPage {
   }
 
   getRandomSeconds(){
-    return Math.floor( Math.random() * 6000 )+ 4000;
+    return Math.floor( Math.random() * 6000 )+ 2000;
   }
   winGame(){
     this.gameWon = true;
@@ -74,6 +74,7 @@ export class ClickerPage {
     let listener = () =>{
       let now = (new Date()).getTime();
       if ( readyToClick ){
+        duration = this.getRandomSeconds();
         colorTime = now;
         readyToChange = true;
         readyToClick = false;

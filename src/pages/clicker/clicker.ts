@@ -11,45 +11,22 @@ import {CommonService} from "../../app/common.service";
 export class ClickerPage {
   private game: any;
   private gameCore: any;
-  private text: any;
-  private bg:any;
-
-  private gameStarted: boolean;
-  private gameWon:boolean;
-  private gameLost: boolean;
-
-  private title: string;
-  private score: number;
-  private instructions: string;
+  private instructions: any;
 
   constructor(public navCtrl: NavController, public com: CommonService) {
-    this.gameStarted = false;
-    this.gameWon = false;
-    this.gameLost = false;
     this.instructions = 'Instruction: Click the screen when the screen color changes. You will get higher score if you click as soon as possible. You lose if you click too soon.';
   }
 
   getRandomSeconds(){
     return Math.floor( Math.random() * 6000 )+ 2000;
   }
-  winGame(){
-    this.gameWon = true;
-  }
 
-  loseGame(){
-    this.gameLost = true;
-  }
-
-  exitGame(){
-    this.navCtrl.pop();
-  }
   ionViewWillLeave(){
     this.gameCore.destroy();
-
   }
 
   startGame(){
-    this.gameStarted = true;
+
     let preload = () => {
       this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;;
     }
@@ -69,6 +46,8 @@ export class ClickerPage {
     let alpha = 0;
     duration = this.getRandomSeconds();
 
+    let text = null;
+    let bg = null;
 
 
     let listener = () =>{
@@ -80,14 +59,14 @@ export class ClickerPage {
         readyToClick = false;
         currentReactionTime = now - reactionStartTime;
         if ( currentReactionTime > 5000 ){
-          this.loseGame();
+          this.game.loseGame();
           return;
         }
         reactionTimes.push( currentReactionTime );
-        this.text.text = currentReactionTime;
+        text.text = currentReactionTime;
         alpha = 0;
 
-        this.title = 'Switch Color - '+ colorIndex + '/' + (listOfColor.length -1)
+        this.gameCore.title = 'Switch Color - '+ colorIndex + '/' + (listOfColor.length -1)
         if ( colorIndex === listOfColor.length - 1 ){
 
 
@@ -97,39 +76,39 @@ export class ClickerPage {
           }
           total /= listOfColor.length - 1;
           total = Math.round(total);
-          this.score = total;
-          this.winGame();
+          this.gameCore.score = total;
+          this.gameCore.winGame();
         }
       }
       else {
-        this.loseGame();
+        this.gameCore.loseGame();
       }
     }
 
     let create = () => {
-      this.title = 'Switch Color - '+ colorIndex + '/' + (listOfColor.length -1)
+      this.gameCore.title = 'Switch Color - '+ colorIndex + '/' + (listOfColor.length -1)
       startTime = (new Date()).getTime();
       colorTime = (new Date()).getTime();
-      this.bg = this.game.add.graphics();
-      this.bg.inputEnabled = true;
-      this.bg.events.onInputDown.add(listener, this.game);
+      bg = this.game.add.graphics();
+      bg.inputEnabled = true;
+      bg.events.onInputDown.add(listener, this.game);
       addBgBox( listOfColor[colorIndex] );
       var style = { font: "bold 144px Arial", fill: "#fff", boundsAlignH: "center", boundsAlignV: "middle" };
-      this.text = this.game.add.text(gameCore.screenWidth/2, gameCore.screenHeight/2, "", style);
-      this.text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
-      this.text.anchor.set(0.5);
-      this.text.text = "";
+      text = this.game.add.text(gameCore.screenWidth/2, gameCore.screenHeight/2, "", style);
+      text.setShadow(3, 3, 'rgba(0,0,0,0.5)', 2);
+      text.anchor.set(0.5);
+      text.text = "";
     }
 
     // Change Color Function
     let addBgBox = ( color: any ) => {
-      if ( this.text ) {
-        this.text.text = "";
+      if ( text ) {
+        text.text = "";
       }
-      this.bg.beginFill( this.com.colorhexToNumber(color), 1.0);
-      this.bg.drawRect(0, 0, gameCore.screenWidth, gameCore.screenHeight);
-      this.bg.drawRect(gameCore.screenWidth, 0, -gameCore.screenWidth, gameCore.screenHeight);
-      this.bg.endFill();
+      bg.beginFill( this.com.colorhexToNumber(color), 1.0);
+      bg.drawRect(0, 0, gameCore.screenWidth, gameCore.screenHeight);
+      bg.drawRect(gameCore.screenWidth, 0, -gameCore.screenWidth, gameCore.screenHeight);
+      bg.endFill();
     }
 
     // Active running function
@@ -144,7 +123,7 @@ export class ClickerPage {
       }
       lastFrame = now;
       let timeElapsed = now - colorTime;
-      if (timeElapsed > duration && readyToChange && !this.gameWon && !this.gameLost ) {
+      if (timeElapsed > duration && readyToChange && !this.gameCore.gameWon && !this.gameCore.gameLost ) {
         if ( colorIndex < listOfColor.length - 1 ) {
           colorIndex++;
           addBgBox(listOfColor[colorIndex]);
@@ -153,17 +132,20 @@ export class ClickerPage {
           readyToChange = false;
         }
       }
-      if ( timeElapsed > duration + 5000 && !this.gameWon && !this.gameLost  ){
-        this.loseGame();
+      if ( timeElapsed > duration + 5000 && !this.gameCore.gameWon && !this.gameCore.gameLost  ){
+        this.gameCore.loseGame();
       }
 
-      this.text.alpha = alpha;
+      text.alpha = alpha;
     }
     let render = () => {
     }
 
-    let gameCore = this.com.commonGame({parent: 'drawingArea',preload: preload, create: create, update: update, render: render});
+    let gameCore = this.com.commonGame({parent: 'drawingArea',preload: preload, create: create, update: update, render: render, navCtrl: this.navCtrl});
     this.gameCore = gameCore;
+    this.gameCore.gameStarted = true;
+
+
     this.game = this.gameCore.phaserGame;
   }
 }

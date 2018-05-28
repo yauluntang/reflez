@@ -29,6 +29,8 @@ export class CommonService  {
       let parent = properties.parent;
 
 
+      gameObject.navCtrl = properties.navCtrl;
+
       gameObject.screenWidth = $('#'+parent).innerWidth() * 2;
       gameObject.screenHeight = $('#'+parent).innerHeight() * 2;
 
@@ -56,6 +58,11 @@ export class CommonService  {
         }
       };
 
+      gameObject.gameWon = false;
+      gameObject.gameExit = false;
+      gameObject.gameStarted = false;
+      gameObject.gameLost = false;
+
 
       gameObject.phaserGame = new Phaser.Game( gameObject.screenWidth, gameObject.screenHeight, Phaser.AUTO, 'drawingArea', { preload: preload, create: create, update: update, render: render });
 
@@ -75,6 +82,24 @@ export class CommonService  {
         gameObject.phaserGame.destroy();
         gameObject.phaserGame = null;
       };
+
+
+      gameObject.winGame = () => {
+        gameObject.gameWon = true;
+      }
+
+      gameObject.loseGame = () => {
+        gameObject.gameLost = true;
+      }
+
+      gameObject.exitGame = () => {
+        gameObject.gameExit = true;
+        setTimeout(()=>{
+          gameObject.navCtrl.pop();
+        },100);
+
+      }
+
 
       return gameObject;
     }

@@ -103,6 +103,7 @@ body{
   width: calc( 100% - 30px );
   margin:15px;
   padding:15px;
+  margin-top:30%;
   border: 2px solid black;
   border-radius: 15px;
   background: white;
@@ -130,7 +131,8 @@ body{
   padding:30px;
 }
 .instruction-icon{
-  max-width:200px;
+  max-width:150px;
+  max-height:100px;
 }
 
 .btn{
